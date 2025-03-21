@@ -7,7 +7,23 @@ using LanguageExt.TypeClasses;
 namespace Dbosoft.Functional.Json.DataTypes;
 
 /// <summary>
-/// 
+/// <para>
+/// A JSON converter which supports <see cref="NewType{NEWTYPE,A, PRED, ORD}"/>.
+/// </para>
+/// <para>
+/// The <see cref="NewType{NEWTYPE,A, PRED, ORD}"/> must be based on one of the
+/// following types: <type><see cref="string"/></type>,
+/// <type><see cref="bool"/></type>, <type><see cref="short"/></type>
+/// <type><see cref="int"/></type>, <type><see cref="long"/></type>
+/// <type><see cref="byte"/></type>, <type><see cref="ushort"/></type>
+/// <type><see cref="uint"/></type>, <type><see cref="ulong"/></type>,
+/// <type><see cref="float"/></type>, <type><see cref="double"/></type>,
+/// <type><see cref="decimal"/></type>.
+/// </para>
+/// <para>
+/// <see cref="NewType{NEWTYPE,A, PRED, ORD}"/>s with <see cref="String"/> as
+/// the base value can be used as keys in dictionaries, objects, etc.
+/// </para>
 /// </summary>
 public class NewTypeJsonConverter : JsonConverterFactory
 {

@@ -1,11 +1,6 @@
-﻿using Dbosoft.Functional.Json.DataTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using Dbosoft.Functional.DataTypes;
+using Dbosoft.Functional.Json.DataTypes;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.ClassInstances;
