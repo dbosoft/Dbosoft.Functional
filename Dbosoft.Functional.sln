@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dbosoft.Functional", "src\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.Functional.Tests", "test\Dbosoft.Functional.Tests\Dbosoft.Functional.Tests.csproj", "{ADA73324-0DE5-479D-A63B-888EB922984E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.Functional.Json", "src\Dbosoft.Functional.Json\Dbosoft.Functional.Json.csproj", "{1060C36D-CF26-4932-A9E6-F2C5BC32B8B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.Functional.Json.Tests", "test\Dbosoft.Functional.Json.Tests\Dbosoft.Functional.Json.Tests.csproj", "{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{ADA73324-0DE5-479D-A63B-888EB922984E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADA73324-0DE5-479D-A63B-888EB922984E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADA73324-0DE5-479D-A63B-888EB922984E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1060C36D-CF26-4932-A9E6-F2C5BC32B8B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1060C36D-CF26-4932-A9E6-F2C5BC32B8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1060C36D-CF26-4932-A9E6-F2C5BC32B8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1060C36D-CF26-4932-A9E6-F2C5BC32B8B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
