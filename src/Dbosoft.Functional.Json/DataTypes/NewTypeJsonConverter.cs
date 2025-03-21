@@ -23,17 +23,10 @@ public class NewTypeJsonConverter : JsonConverterFactory
             return false;
 
         var a = arguments[1];
-        return a == typeof(string)
-               || a == typeof(bool)
-               || a == typeof(short)
-               || a == typeof(int)
-               || a == typeof(long)
-               || a == typeof(ushort)
-               || a == typeof(uint)
-               || a == typeof(ulong)
-               || a == typeof(float)
-               || a == typeof(double)
-               || a == typeof(decimal);
+        return a == typeof(string) || a == typeof(bool)
+               || a == typeof(short) || a == typeof(int) || a == typeof(long)
+               || a == typeof(byte) || a == typeof(ushort) || a == typeof(uint) || a == typeof(ulong)
+               || a == typeof(float) || a == typeof(double) || a == typeof(decimal);
     }
 
     /// <inheritdoc />
@@ -58,7 +51,7 @@ public class NewTypeJsonConverter : JsonConverterFactory
         }
 
         if (a == typeof(bool) || a == typeof(short) || a == typeof(int) || a == typeof(long)
-            || a == typeof(ushort) || a == typeof(uint) || a == typeof(ulong)
+            || a == typeof(byte) || a == typeof(ushort) || a == typeof(uint) || a == typeof(ulong)
             || a == typeof(float) || a == typeof(double) || a == typeof(decimal))
         {
             return (JsonConverter)Activator.CreateInstance(
