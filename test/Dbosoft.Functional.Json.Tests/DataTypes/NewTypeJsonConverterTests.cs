@@ -4,6 +4,7 @@ using Dbosoft.Functional.Json.DataTypes;
 using FluentAssertions;
 using LanguageExt;
 using LanguageExt.ClassInstances;
+using Xunit;
 
 namespace Dbosoft.Functional.Json.Tests.DataTypes;
 
@@ -418,18 +419,18 @@ public class NewTypeJsonConverterTests
         var result = JsonSerializer.Serialize(entity, OptionsWithIndent);
         
         result.Should().Be("""
-                          {
-                            "property": "property-value",
-                            "list": [
-                              "list-item-1",
-                              "list-item-2"
-                            ],
-                            "map": {
-                              "key-1": "map-value-1",
-                              "key-2": "map-value-2"
-                            }
-                          }
-                          """);
+                           {
+                             "property": "property-value",
+                             "list": [
+                               "list-item-1",
+                               "list-item-2"
+                             ],
+                             "map": {
+                               "key-1": "map-value-1",
+                               "key-2": "map-value-2"
+                             }
+                           }
+                           """);
     }
 
     [Fact]
@@ -864,7 +865,9 @@ public class NewTypeJsonConverterTests
     public class KeyTestEntity<TValue>
     {
         public required TValue Property { get; set; }
+
         public required IReadOnlyList<TValue> List { get; set; }
+
         public required IReadOnlyDictionary<TValue, TValue> Map { get; init; }
     }
 

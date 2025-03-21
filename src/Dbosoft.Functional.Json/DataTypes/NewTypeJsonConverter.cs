@@ -21,7 +21,7 @@ namespace Dbosoft.Functional.Json.DataTypes;
 /// <type><see cref="decimal"/></type>.
 /// </para>
 /// <para>
-/// <see cref="NewType{NEWTYPE,A, PRED, ORD}"/>s with <see cref="String"/> as
+/// <see cref="NewType{NEWTYPE,A, PRED, ORD}"/>s with <see cref="string"/> as
 /// the base value can be used as keys in dictionaries, objects, etc.
 /// </para>
 /// </summary>
@@ -185,7 +185,7 @@ internal class NewTypeJsonConverter<T, NEWTYPE, A, PRED, ORD>
                 writer.WriteNumberValue(v);
                 return;
             default:
-                throw new ArgumentException("Values this type are not supported.", nameof(value));
+                throw new ArgumentException("Values of this type are not supported.", nameof(value));
         }
     }
 }
