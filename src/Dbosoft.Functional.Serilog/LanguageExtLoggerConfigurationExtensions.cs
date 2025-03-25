@@ -18,7 +18,7 @@ public static class LanguageExtLoggerConfigurationExtensions
     /// <remarks>
     /// The <c>InnerError</c> property needs to be added to the Serilog message
     /// template to be included in the log output. The template might look like this:
-    /// <c>[{Level:u3}] {Message}{NewLine}{Exception}{InnerError}</c>
+    /// <c>[{Level:u3}] {Message}{NewLine}{Exception}{InnerError}</c>.
     /// </remarks>
     public static LoggerConfiguration WithLanguageExt(
         this LoggerEnrichmentConfiguration enrichmentConfiguration)

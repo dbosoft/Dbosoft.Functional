@@ -10,7 +10,7 @@ public class LanguageExtEnricherTests
     [Fact]
     public void Enriches_log_with_complex_error_hierarchy()
     {
-        var writer = new StringWriter();
+        using var writer = new StringWriter();
         using (var log = CreateLogger(writer))
         {
             try
@@ -42,7 +42,7 @@ public class LanguageExtEnricherTests
     [Fact]
     public void Enriches_log_with_nested_exception()
     {
-        var writer = new StringWriter();
+        using var writer = new StringWriter();
         using (var log = CreateLogger(writer))
         {
             try
@@ -60,7 +60,6 @@ public class LanguageExtEnricherTests
             {
                 log.Error(Error.New("root error", Error.New(ex)), "log message");
             }
-            
         }
 
         var result = writer.ToString();
