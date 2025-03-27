@@ -11,10 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.Functional.Json", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.Functional.Json.Tests", "test\Dbosoft.Functional.Json.Tests\Dbosoft.Functional.Json.Tests.csproj", "{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.Functional.Serilog", "src\Dbosoft.Functional.Serilog\Dbosoft.Functional.Serilog.csproj", "{F1958E42-09C1-4291-997A-FB9B19688DFF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.Functional.Serilog.Tests", "test\Dbosoft.Functional.Serilog.Tests\Dbosoft.Functional.Serilog.Tests.csproj", "{289F816D-A49C-4D15-B45D-8A788118832D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,14 +33,6 @@ Global
 		{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6E91D63-DB2C-4B6F-A701-4F1BA558AB0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1958E42-09C1-4291-997A-FB9B19688DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1958E42-09C1-4291-997A-FB9B19688DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1958E42-09C1-4291-997A-FB9B19688DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1958E42-09C1-4291-997A-FB9B19688DFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{289F816D-A49C-4D15-B45D-8A788118832D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{289F816D-A49C-4D15-B45D-8A788118832D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{289F816D-A49C-4D15-B45D-8A788118832D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{289F816D-A49C-4D15-B45D-8A788118832D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
