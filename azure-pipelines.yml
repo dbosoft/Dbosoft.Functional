@@ -8,8 +8,9 @@ trigger:
 - refs/tags/v*
 
 pool:
-  name: 'default'
+  vmImage: windows-latest  
 
+  
 variables:
   buildConfiguration: 'Release'
 
