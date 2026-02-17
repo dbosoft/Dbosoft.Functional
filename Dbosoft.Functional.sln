@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.Functional.Json.Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C88DD14-F956-CE84-757C-A364CCF449FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwesomeAssertions.LanguageExt", "test\AwesomeAssertions.LanguageExt\AwesomeAssertions.LanguageExt.csproj", "{613F443F-D863-4C96-A0B6-CE343C05C2CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dbosoft.AwesomeAssertions.LanguageExt", "src\Dbosoft.AwesomeAssertions.LanguageExt\Dbosoft.AwesomeAssertions.LanguageExt.csproj", "{613F443F-D863-4C96-A0B6-CE343C05C2CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
@@ -92,7 +92,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{613F443F-D863-4C96-A0B6-CE343C05C2CB} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
+		{613F443F-D863-4C96-A0B6-CE343C05C2CB} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7150D06-C3F8-4A71-B3C2-FA23C59EBAED}

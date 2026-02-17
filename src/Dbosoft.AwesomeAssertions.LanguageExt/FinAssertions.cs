@@ -1,9 +1,9 @@
-using AwesomeAssertions.Execution;
-using AwesomeAssertions.Primitives;
+using global::AwesomeAssertions;
+using global::AwesomeAssertions.Execution;
 using LanguageExt;
 using LanguageExt.Common;
 
-namespace AwesomeAssertions.LanguageExt;
+namespace Dbosoft.AwesomeAssertions.LanguageExt;
 
 public class FinAssertions<T>(Fin<T> subject, AssertionChain chain)
 {

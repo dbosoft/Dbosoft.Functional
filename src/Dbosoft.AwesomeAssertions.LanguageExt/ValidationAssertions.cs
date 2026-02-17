@@ -1,9 +1,9 @@
-using AwesomeAssertions.Execution;
-using AwesomeAssertions.Primitives;
+using global::AwesomeAssertions;
+using global::AwesomeAssertions.Execution;
 using LanguageExt;
 using LanguageExt.Traits;
 
-namespace AwesomeAssertions.LanguageExt;
+namespace Dbosoft.AwesomeAssertions.LanguageExt;
 
 public class ValidationAssertions<F, A>(Validation<F, A> subject, AssertionChain chain)
     where F : Monoid<F>

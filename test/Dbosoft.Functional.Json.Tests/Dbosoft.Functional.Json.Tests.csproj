@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dbosoft.Functional.Json\Dbosoft.Functional.Json.csproj" />
-    <ProjectReference Include="..\AwesomeAssertions.LanguageExt\AwesomeAssertions.LanguageExt.csproj" />
+    <ProjectReference Include="..\..\src\Dbosoft.AwesomeAssertions.LanguageExt\Dbosoft.AwesomeAssertions.LanguageExt.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,3 @@
 global using AwesomeAssertions;
-global using AwesomeAssertions.LanguageExt;
+global using Dbosoft.AwesomeAssertions.LanguageExt;
 global using Xunit;

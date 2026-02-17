@@ -1,9 +1,9 @@
-using AwesomeAssertions.Execution;
-using Dbosoft.Functional.Validations;
+using global::AwesomeAssertions.Execution;
+
 using LanguageExt;
 using LanguageExt.Traits;
 
-namespace AwesomeAssertions.LanguageExt;
+namespace Dbosoft.AwesomeAssertions.LanguageExt;
 
 public static class LanguageExtAssertionExtensions
 {

@@ -1,8 +1,8 @@
-using AwesomeAssertions.Execution;
-using AwesomeAssertions.Primitives;
+using global::AwesomeAssertions;
+using global::AwesomeAssertions.Execution;
 using LanguageExt;
 
-namespace AwesomeAssertions.LanguageExt;
+namespace Dbosoft.AwesomeAssertions.LanguageExt;
 
 public class OptionAssertions<T>(Option<T> subject, AssertionChain chain)
 {
