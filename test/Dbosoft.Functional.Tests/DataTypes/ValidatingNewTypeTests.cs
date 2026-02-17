@@ -1,16 +1,16 @@
-﻿using LanguageExt.ClassInstances;
 using LanguageExt.Common;
 using LanguageExt;
-using static FluentAssertions.FluentActions;
 using static LanguageExt.Prelude;
 using Dbosoft.Functional.DataTypes;
+
+#pragma warning disable CS0618 // Obsolete shim types
 
 namespace Dbosoft.Functional.Tests.DataTypes;
 
 public class ValidatingNewTypeTests
 {
     public class TestTypeWithArgumentException
-        : ValidatingNewType<TestTypeWithArgumentException, string, OrdStringOrdinalIgnoreCase>
+        : ValidatingNewType<TestTypeWithArgumentException, string>
     {
         public TestTypeWithArgumentException(string value) : base(value)
         {
@@ -19,17 +19,17 @@ public class ValidatingNewTypeTests
     }
 
     public class TestTypeWithValidationException
-        : ValidatingNewType<TestTypeWithValidationException, string, OrdStringOrdinalIgnoreCase>
+        : ValidatingNewType<TestTypeWithValidationException, string>
     {
         public TestTypeWithValidationException(string value) : base(value)
         {
             ValidOrThrow(Fail<Error, string>(Error.New("First validation failed"))
-                         | Fail<Error, string>(Error.New("Second validation failed")));
+                         + Fail<Error, string>(Error.New("Second validation failed")));
         }
     }
 
     public class TestTypeWithValidationSuccess
-        : ValidatingNewType<TestTypeWithValidationSuccess, string, OrdStringOrdinalIgnoreCase>
+        : ValidatingNewType<TestTypeWithValidationSuccess, string>
     {
         public TestTypeWithValidationSuccess(string value) : base(value)
         {
@@ -40,16 +40,17 @@ public class ValidatingNewTypeTests
     [Fact]
     public void New_WithArgumentException_ThrowsArgumentException()
     {
-        Invoking(() => TestTypeWithArgumentException.New("test"))
-            .Should().Throw<ArgumentException>()
-                .WithMessage("The value is invalid (Parameter 'value')");
+        var act = () => TestTypeWithArgumentException.New("test");
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("The value is invalid (Parameter 'value')");
     }
 
     [Fact]
     public void New_WithValidationErrors_ThrowsValidationException()
     {
-        var exception = Invoking(() => TestTypeWithValidationException.New("test"))
-            .Should().Throw<TestTypeWithValidationException.ValidationException<TestTypeWithValidationException>>()
+        var act = () => TestTypeWithValidationException.New("test");
+        var exception = act.Should()
+            .Throw<TestTypeWithValidationException.ValidationException<TestTypeWithValidationException>>()
             .WithMessage("The value is not a valid TestTypeWithValidationException: "
                 + "[First validation failed, Second validation failed]")
             .Subject.Should().ContainSingle().Subject;
@@ -62,7 +63,7 @@ public class ValidatingNewTypeTests
     {
         var result = TestTypeWithArgumentException.NewEither("test");
 
-        var error = result.Should().BeLeft().Subject;
+        var error = result.Should().BeLeft().Which;
         var innerError = error.Inner.Should().BeSome()
             .Which.Should().BeOfType<Exceptional>().Subject;
         innerError.Message.Should().Be("The value is invalid (Parameter 'value')");
@@ -76,7 +77,7 @@ public class ValidatingNewTypeTests
     {
         var result = TestTypeWithValidationException.NewEither("test");
 
-        var error = result.Should().BeLeft().Subject;
+        var error = result.Should().BeLeft().Which;
         error.Message.Should().Be("The value is not a valid TestTypeWithValidationException.");
         var innerErrors = error.Inner.Should().BeSome().Which
             .Should().BeOfType<ManyErrors>().Subject.Errors;
@@ -88,10 +89,10 @@ public class ValidatingNewTypeTests
     {
         var result = TestTypeWithValidationSuccess.NewEither(null!);
 
-        var error = result.Should().BeLeft().Subject;
+        var error = result.Should().BeLeft().Which;
         error.Message.Should().Be("The value is not a valid TestTypeWithValidationSuccess.");
-        
-        var innerError = error.Inner.Should().BeSome().Subject;
+
+        var innerError = error.Inner.Should().BeSome().Which;
         innerError.Message.Should().Be("The value cannot be null.");
         innerError.IsExceptional.Should().BeFalse();
         innerError.Exception.Should().BeNone();
@@ -102,14 +103,11 @@ public class ValidatingNewTypeTests
     {
         var result = TestTypeWithArgumentException.NewValidation("test");
 
-        result.Should().BeFail().Which.Should().SatisfyRespectively(
-            error =>
-            {
-                error.Message.Should().Be("The value is invalid (Parameter 'value')");
-                error.IsExceptional.Should().BeTrue();
-                error.Exception.Should().BeSome().Which
-                    .Should().BeOfType<ArgumentException>();
-            });
+        var error = result.Should().BeFail().Which;
+        error.Message.Should().Be("The value is invalid (Parameter 'value')");
+        error.IsExceptional.Should().BeTrue();
+        error.Exception.Should().BeSome().Which
+            .Should().BeOfType<ArgumentException>();
     }
 
     [Fact]
@@ -117,8 +115,8 @@ public class ValidatingNewTypeTests
     {
         var result = TestTypeWithValidationException.NewValidation("test");
 
-        var errors = result.Should().BeFail().Subject;
-        ShouldContainValidationErrors(errors);
+        var error = result.Should().BeFail().Which;
+        ShouldContainValidationErrors(error);
     }
 
     [Fact]
@@ -126,18 +124,15 @@ public class ValidatingNewTypeTests
     {
         var result = TestTypeWithValidationSuccess.NewValidation(null!);
 
-        result.Should().BeFail().Which.Should().SatisfyRespectively(
-            error =>
-            {
-                error.Message.Should().Be("The value cannot be null.");
-                error.IsExceptional.Should().BeFalse();
-                error.Exception.Should().BeNone();
-            });
+        var error = result.Should().BeFail().Which;
+        error.Message.Should().Be("The value cannot be null.");
+        error.IsExceptional.Should().BeFalse();
+        error.Exception.Should().BeNone();
     }
 
     private static void ShouldContainValidationErrors(Seq<Error> errors)
     {
-        errors.Should().SatisfyRespectively(
+        ((IEnumerable<Error>)errors).Should().SatisfyRespectively(
             error =>
             {
                 error.Message.Should().Be("First validation failed");
@@ -150,5 +145,11 @@ public class ValidatingNewTypeTests
                 error.IsExceptional.Should().BeFalse();
                 error.Exception.Should().BeNone();
             });
+    }
+
+    private static void ShouldContainValidationErrors(Error error)
+    {
+        var errors = error is ManyErrors many ? many.Errors : Seq1(error);
+        ShouldContainValidationErrors(errors);
     }
 }

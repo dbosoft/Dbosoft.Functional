@@ -1,10 +1,9 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Dbosoft.Functional.DataTypes;
 using Dbosoft.Functional.Json.DataTypes;
-using FluentAssertions;
 using LanguageExt;
-using LanguageExt.ClassInstances;
-using Xunit;
+
+#pragma warning disable CS0618 // Obsolete shim types
 
 namespace Dbosoft.Functional.Json.Tests.DataTypes;
 
@@ -417,7 +416,7 @@ public class NewTypeJsonConverterTests
         };
 
         var result = JsonSerializer.Serialize(entity, OptionsWithIndent);
-        
+
         result.Should().Be("""
                            {
                              "property": "property-value",
@@ -858,7 +857,7 @@ public class NewTypeJsonConverterTests
     }
 
     public class ValidatingTestType(string value)
-        : ValidatingNewType<ValidatingTestType, string, OrdStringOrdinalIgnoreCase>(value)
+        : ValidatingNewType<ValidatingTestType, string>(value)
     {
     }
 
@@ -880,4 +879,3 @@ public class NewTypeJsonConverterTests
         public required IReadOnlyDictionary<string, TValue> Map { get; init; }
     }
 }
-

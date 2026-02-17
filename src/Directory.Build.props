@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>12</LangVersion>
+    <LangVersion>14</LangVersion>
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
 

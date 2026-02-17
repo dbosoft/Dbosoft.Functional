@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
-using static LanguageExt.Prelude;
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable once CheckNamespace
@@ -11,20 +10,25 @@ namespace LanguageExt
     {
         public static EitherAsync<L, R2> Use<L, R1, R2>(this EitherAsync<L, R1> self, Func<EitherAsync<L, R1>, EitherAsync<L, R2>> map) where R1 : IDisposable
         {
-            var res = self.ToEither().BindAsync(f => use(f, f1 => map(self).ToEither()));
+            var res = self.ToEither().BindAsync(f => UseDisposable(f, f1 => map(self).ToEither()));
             return res.ToAsync();
         }
 
         public static Task<Either<L, R2>> Use<L, R1, R2>(this Task<Either<L, R1>> self, Func<Task<Either<L, R1>>, Task<Either<L, R2>>> map) where R1 : IDisposable
         {
-            var res = self.BindAsync(f => use(f, f1 => map(self)));
+            var res = self.BindAsync(f => UseDisposable(f, f1 => map(self)));
             return res;
         }
 
         public static Either<L, R2> Use<L, R1, R2>(this Either<L, R1> self, Func<Either<L, R1>, Either<L, R2>> map) where R1 : IDisposable
         {
-            var res = self.Bind(f => use(f, f1 => map(self)));
-            return res;
+            return self.Bind(f => UseDisposable(f, f1 => map(self)));
+        }
+
+        private static R UseDisposable<T, R>(T resource, Func<T, R> f) where T : IDisposable
+        {
+            try { return f(resource); }
+            finally { resource?.Dispose(); }
         }
     }
 }
