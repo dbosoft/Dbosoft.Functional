@@ -2,6 +2,9 @@ using LanguageExt;
 using LanguageExt.Common;
 
 using static LanguageExt.Prelude;
+using static LanguageExt.CompatPrelude;
+
+#pragma warning disable CS0618 // Obsolete shim types
 
 namespace Dbosoft.Functional.Tests;
 

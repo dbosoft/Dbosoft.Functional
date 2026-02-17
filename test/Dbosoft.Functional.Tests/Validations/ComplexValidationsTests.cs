@@ -1,4 +1,4 @@
-﻿using Dbosoft.Functional.Validations;
+using Dbosoft.Functional.Validations;
 using LanguageExt;
 using LanguageExt.Common;
 using Moq;
@@ -194,43 +194,39 @@ public static class TravelGroupValidations
     public static Validation<ValidationIssue, Unit> ValidateTravelGroup(
         TravelGroup travelGroup, string path = "") =>
         ValidateProperty(travelGroup, x => x.Name, ValidateName, path, required: true)
-        | ValidateProperty(travelGroup, x => x.Description, ValidateDescription, path, required: false)
-        | ValidateProperty(travelGroup, x => x.Contact, ValidateContact, path, required: true)
-        | ValidateList(travelGroup, x => x.Participants, ValidateParticipant, path, minCount: 2, maxCount: 20);
+        .CombineAll(ValidateProperty(travelGroup, x => x.Description, ValidateDescription, path, required: false))
+        .CombineAll(ValidateProperty(travelGroup, x => x.Contact, ValidateContact, path, required: true))
+        .CombineAll(ValidateList(travelGroup, x => x.Participants, ValidateParticipant, path, minCount: 2, maxCount: 20));
 
     public static Validation<ValidationIssue, Unit> ValidateContact(
         Contact contact, string path = "") =>
         ValidateProperty(contact, x => x.Name, ValidateName, path, required: true)
-        | ValidateProperty(contact, x => x.Phone, ValidatePhone, path, required: false);
+        .CombineAll(ValidateProperty(contact, x => x.Phone, ValidatePhone, path, required: false));
 
     public static Validation<ValidationIssue, Unit> ValidateParticipant(
         Participant participant, string path = "") =>
         ValidateProperty(participant, x => x.Name, ValidateName, path, required: true)
-        | ValidateProperty(participant, x => x.Age, ValidateAge, path, required: true);
+        .CombineAll(ValidateProperty(participant, x => x.Age, ValidateAge, path, required: true));
 
     public static Validation<Error, string> ValidateName(string name) =>
-        from _ in guard(name.ToSeq().All(c => char.IsLetterOrDigit(c) || c == ' '),
-                Error.New("The name can only contain letters, digits and spaces."))
-            .ToValidation()
-        select name;
+        name.All(c => char.IsLetterOrDigit(c) || c == ' ')
+            ? Success<Error, string>(name)
+            : Fail<Error, string>(Error.New("The name can only contain letters, digits and spaces."));
 
     public static Validation<Error, string> ValidateDescription(string description) =>
-        from _ in guard(description.ToSeq().All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)),
-                Error.New("The description can only contain letters, digits and white space."))
-            .ToValidation()
-        select description;
+        description.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
+            ? Success<Error, string>(description)
+            : Fail<Error, string>(Error.New("The description can only contain letters, digits and white space."));
 
     public static Validation<Error, int> ValidateAge(int age) =>
-        from _ in guard(age is >= 0 and <= 150,
-                Error.New("The age must be between 0 and 150."))
-            .ToValidation()
-        select age;
+        age is >= 0 and <= 150
+            ? Success<Error, int>(age)
+            : Fail<Error, int>(Error.New("The age must be between 0 and 150."));
 
     public static Validation<Error, string> ValidatePhone(string phone) =>
-        from _ in guard(phone.ToSeq().All(c => char.IsDigit(c) || c == '+'),
-                Error.New("The phone number can only contain digits or +."))
-            .ToValidation()
-        select phone;
+        phone.All(c => char.IsDigit(c) || c == '+')
+            ? Success<Error, string>(phone)
+            : Fail<Error, string>(Error.New("The phone number can only contain digits or +."));
 }
 
 public class TestType

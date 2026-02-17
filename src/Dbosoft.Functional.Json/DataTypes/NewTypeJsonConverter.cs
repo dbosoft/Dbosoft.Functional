@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using LanguageExt;
 using LanguageExt.TypeClasses;
 
 namespace Dbosoft.Functional.Json.DataTypes;
+
+#pragma warning disable CS0618 // Obsolete shim types
 
 /// <summary>
 /// <para>
@@ -189,3 +191,5 @@ internal class NewTypeJsonConverter<T, NEWTYPE, A, PRED, ORD>
         }
     }
 }
+
+#pragma warning restore CS0618

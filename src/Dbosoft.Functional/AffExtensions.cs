@@ -6,6 +6,8 @@ using static LanguageExt.Prelude;
 // ReSharper disable once CheckNamespace
 namespace LanguageExt
 {
+    #pragma warning disable CS0618 // Obsolete shim types
+
     public static class AffExtensions
     {
         /// <summary>
@@ -19,6 +21,8 @@ namespace LanguageExt
         /// Converts a <see cref="ValueTask{Fin}"/> to an <see cref="EitherAsync{Error, R}"/>.
         /// </summary>
         public static EitherAsync<Error, R> ToEitherAsync<R>(this ValueTask<Fin<R>> fin) =>
-            fin.AsTask().Map(f => f.ToEither()).ToAsync();
+            new(fin.AsTask().Map(f => f.ToEither()));
     }
+
+    #pragma warning restore CS0618
 }

@@ -1,10 +1,9 @@
-﻿using LanguageExt.Common;
+using LanguageExt.Common;
 using LanguageExt;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using static LanguageExt.Prelude;
 
 namespace Dbosoft.Functional.Validations;
@@ -22,7 +21,7 @@ public static class ComplexValidations
         T toValidate,
         Expression<Func<T, string?>> getProperty,
         Func<string, Validation<Error, TResult>> validate,
-        string path = "", 
+        string path = "",
         bool required = false) =>
         ValidateProperty(
             Optional(getProperty.Compile().Invoke(toValidate)).Filter(notEmpty),
@@ -98,7 +97,7 @@ public static class ComplexValidations
         Option<int> minCount = default,
         Option<int> maxCount = default) =>
         ValidateList(
-            getList.Compile().Invoke(toValidate).ToSeq(),
+            toSeq(getList.Compile().Invoke(toValidate) ?? Enumerable.Empty<TProperty?>()),
             getList,
             validate,
             path,
@@ -116,16 +115,15 @@ public static class ComplexValidations
             Some: c => Fail<ValidationIssue, Unit>(
                 new ValidationIssue(JoinPath(path, getList), $"The list must have {c} or more entries.")),
             None: () => Success<ValidationIssue, Unit>(unit))
-        | match(maxCount.Filter(c => c < list.Count),
+        .CombineAll(match(maxCount.Filter(c => c < list.Count),
             Some: c => Fail<ValidationIssue, Unit>(
                 new ValidationIssue(JoinPath(path, getList), $"The list must have {c} or fewer entries.")),
-            None: () => Success<ValidationIssue, Unit>(unit))
-        | list.Map((index, listItem) =>
-                from li in Optional(listItem).ToValidation(
-                    new ValidationIssue($"{JoinPath(path, getList)}[{index}]", "The entry must not be null."))
-                from _ in validate(li, $"{JoinPath(path, getList)}[{index}]")
-                select unit)
-            .Fold(Success<ValidationIssue, Unit>(unit), (acc, listItem) => acc | listItem);
+            None: () => Success<ValidationIssue, Unit>(unit)))
+        .CombineAll(list.Select((listItem, index) =>
+                Optional(listItem)
+                    .ToValidation(new ValidationIssue($"{JoinPath(path, getList)}[{index}]", "The entry must not be null."))
+                    .Bind(li => validate(li, $"{JoinPath(path, getList)}[{index}]")))
+            .Aggregate(Success<ValidationIssue, Unit>(unit), (acc, listItem) => acc.CombineAll(listItem)));
 
     private static string JoinPath<T, TProperty>(string path, Expression<Func<T, TProperty?>> getProperty) =>
         notEmpty(path) ? $"{path}.{GetPropertyName(getProperty)}" : GetPropertyName(getProperty);

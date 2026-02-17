@@ -1,24 +1,26 @@
-﻿using System;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using LanguageExt.Common;
+using static LanguageExt.CompatPrelude;
 
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable once CheckNamespace
 namespace LanguageExt
 {
+    #pragma warning disable CS0618 // Obsolete shim types
+
     public static class EitherExtensions
     {
 
         public static Task<Either<Error, TIn>> ToEitherRight<TIn>(this TIn right)
         {
-            return Prelude.RightAsync<Error, TIn>(right).ToEither();
+            return RightAsync<Error, TIn>(right).ToEither();
         }
 
         public static Task<Either<Error, TIn>> ToEitherLeft<TIn>(this Error error)
         {
-            return Prelude.LeftAsync<Error, TIn>(error).ToEither();
+            return LeftAsync<Error, TIn>(error).ToEither();
         }
 
         public static Task<Either<Error, TIn>> IfNoneAsync<TIn>(this Task<Either<Error, Option<TIn>>> either,
@@ -75,4 +77,6 @@ namespace LanguageExt
                 None: () => EitherAsync<Error, Unit>.Right(Prelude.unit)));
         }
     }
+
+    #pragma warning restore CS0618
 }

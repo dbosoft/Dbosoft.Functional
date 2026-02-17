@@ -2,6 +2,9 @@ using LanguageExt;
 using LanguageExt.Common;
 
 using static LanguageExt.Prelude;
+using static LanguageExt.CompatPrelude;
+
+#pragma warning disable CS0618 // Obsolete shim types
 
 namespace Dbosoft.Functional.Tests;
 
@@ -33,7 +36,8 @@ public class AffExtensionsTests
     [Fact]
     public async Task ToEitherAsync_SuccFin_ReturnsRight()
     {
-        var fin = new ValueTask<Fin<int>>(Fin<int>.Succ(42));
+        Fin<int> succFin = 42;
+        var fin = new ValueTask<Fin<int>>(succFin);
         var either = fin.ToEitherAsync();
         var result = await either.ToEither();
 
@@ -45,7 +49,8 @@ public class AffExtensionsTests
     public async Task ToEitherAsync_FailFin_ReturnsLeft()
     {
         var error = Error.New("test error");
-        var fin = new ValueTask<Fin<int>>(Fin<int>.Fail(error));
+        Fin<int> failFin = error;
+        var fin = new ValueTask<Fin<int>>(failFin);
         var either = fin.ToEitherAsync();
         var result = await either.ToEither();
 
