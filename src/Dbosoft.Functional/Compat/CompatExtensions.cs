@@ -10,27 +10,22 @@ namespace LanguageExt;
 
 /// <summary>
 /// Extension methods that restore v4-era APIs removed in LanguageExt v5.
-/// These exist for migration compatibility and should be replaced with
-/// native v5 patterns over time.
 /// </summary>
-[Obsolete("These extensions are v4 compatibility shims. Migrate to native v5 patterns.")]
 public static class CompatExtensions
 {
     // ── Either ↔ EitherAsync conversions ───────────────────────────
 
     /// <summary>
-    /// Wraps a synchronous <c>Either</c> in an <c>EitherAsync</c>.
-    /// Replaces v4's <c>Either.ToAsync()</c>.
+    /// Convert the Either to an EitherAsync.
     /// </summary>
-    [Obsolete("EitherAsync is a v4 compatibility shim. Use Either<L, R> with async/await instead.")]
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static EitherAsync<L, R> ToAsync<L, R>(this Either<L, R> either) =>
         new(Task.FromResult(either));
 
     /// <summary>
-    /// Wraps a <c>Task&lt;Either&gt;</c> in an <c>EitherAsync</c>.
-    /// Replaces v4's <c>Task&lt;Either&gt;.ToAsync()</c>.
+    /// Convert a <c>Task&lt;Either&gt;</c> to an EitherAsync.
     /// </summary>
-    [Obsolete("EitherAsync is a v4 compatibility shim. Use Task<Either<L, R>> with async/await instead.")]
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static EitherAsync<L, R> ToAsync<L, R>(this Task<Either<L, R>> task) =>
         new(task);
 
@@ -65,10 +60,12 @@ public static class CompatExtensions
     // ── Task<Either> bind / map extensions ─────────────────────────
 
     /// <summary>
-    /// Async bind on <c>Task&lt;Either&gt;</c> with an async binder.
-    /// Replaces v4's transformer-based <c>BindAsync</c>.
+    /// Monadic bind on <c>Task&lt;Either&gt;</c> with an async binder.
     /// </summary>
-    [Obsolete("Use async/await with Either<L, R> instead.")]
+    /// <param name="self">Either to bind</param>
+    /// <param name="f">Bind function</param>
+    /// <returns>Bound Either</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static async Task<Either<L, R2>> BindAsync<L, R1, R2>(
         this Task<Either<L, R1>> self,
         Func<R1, Task<Either<L, R2>>> f)
@@ -81,10 +78,12 @@ public static class CompatExtensions
     }
 
     /// <summary>
-    /// Sync bind on <c>Task&lt;Either&gt;</c> with a synchronous binder.
-    /// Replaces v4's transformer-based <c>BindAsync</c> when the binder returns a sync Either.
+    /// Monadic bind on <c>Task&lt;Either&gt;</c> with a synchronous binder.
     /// </summary>
-    [Obsolete("Use async/await with Either<L, R> instead.")]
+    /// <param name="self">Either to bind</param>
+    /// <param name="f">Bind function</param>
+    /// <returns>Bound Either</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static async Task<Either<L, R2>> BindAsync<L, R1, R2>(
         this Task<Either<L, R1>> self,
         Func<R1, Either<L, R2>> f)
@@ -94,10 +93,12 @@ public static class CompatExtensions
     }
 
     /// <summary>
-    /// Synchronous map on the Right value of <c>Task&lt;Either&gt;</c>.
-    /// Replaces v4's <c>EitherAsync.MapAsync</c> which mapped the Right value.
+    /// Maps the value in the Either if it's in a Right state.
     /// </summary>
-    [Obsolete("Use async/await with Either<L, R> instead.")]
+    /// <param name="self">Either to map</param>
+    /// <param name="f">Map function</param>
+    /// <returns>Mapped Either</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static async Task<Either<L, R2>> MapAsync<L, R, R2>(
         this Task<Either<L, R>> self,
         Func<R, R2> f)
@@ -109,9 +110,11 @@ public static class CompatExtensions
     /// <summary>
     /// Extracts from <c>Task&lt;Either&lt;L, Option&lt;A&gt;&gt;&gt;</c>.
     /// If Right(Some(a)) returns Right(a), if Right(None) calls noneFunc, if Left propagates.
-    /// Replaces v4's <c>IfNoneAsync</c> transformer.
     /// </summary>
-    [Obsolete("Use async/await with Either and Option instead.")]
+    /// <param name="self">Either containing an Option</param>
+    /// <param name="noneFunc">Function to invoke when None</param>
+    /// <returns>Extracted Either</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static async Task<Either<L, A>> IfNoneAsync<L, A>(
         this Task<Either<L, Option<A>>> self,
         Func<Task<Either<L, A>>> noneFunc)
@@ -129,10 +132,13 @@ public static class CompatExtensions
     // ── Option extensions ──────────────────────────────────────────
 
     /// <summary>
-    /// Async match on <c>Option</c> with mixed sync/async handlers.
-    /// Replaces v4's <c>Option.MatchAsync()</c>.
+    /// Invokes the Some or None function depending on the state of the Option.
     /// </summary>
-    [Obsolete("Use Option<A>.Match() with async/await instead.")]
+    /// <param name="option">Option to match</param>
+    /// <param name="Some">Function to invoke if in a Some state</param>
+    /// <param name="None">Async function to invoke if in a None state</param>
+    /// <returns>The return value of the invoked function</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static async Task<B> MatchAsync<A, B>(
         this Option<A> option,
         Func<A, B> Some,
@@ -156,11 +162,12 @@ public static class CompatExtensions
             None: Enumerable.Empty<T>);
 
     /// <summary>
-    /// Converts an <c>Option&lt;A&gt;</c> to an <c>EitherAsync&lt;L, A&gt;</c>,
-    /// using the provided value for the Left case when None.
-    /// Replaces v4's <c>Option.ToEitherAsync(L)</c>.
+    /// Convert the structure to an EitherAsync.
     /// </summary>
-    [Obsolete("Use Option.ToEither() with async/await instead.")]
+    /// <param name="option">Option to convert</param>
+    /// <param name="left">Default value if the structure is in a None state</param>
+    /// <returns>An EitherAsync representation of the structure</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static EitherAsync<L, A> ToEitherAsync<L, A>(this Option<A> option, L left) =>
         new(Task.FromResult(option.Match(
             Some: a => Prelude.Right<L, A>(a),
@@ -168,9 +175,10 @@ public static class CompatExtensions
 
     /// <summary>
     /// Converts an <c>EitherAsync&lt;Error, R&gt;</c> to a <c>Validation&lt;Error, R&gt;</c>.
-    /// Replaces v4's <c>EitherAsync.ToValidation()</c>.
     /// </summary>
-    [Obsolete("Use Either with async/await instead of EitherAsync.")]
+    /// <param name="self">EitherAsync to convert</param>
+    /// <returns>A Validation representation of the EitherAsync</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static async Task<Validation<Error, R>> ToValidation<R>(this EitherAsync<Error, R> self)
     {
         var either = await self.ToEither().ConfigureAwait(false);
@@ -221,18 +229,24 @@ public static class CompatExtensions
     /// <summary>
     /// Runs all <c>EitherAsync</c> computations in parallel and collects results.
     /// Returns the first Left encountered, or all Right values.
-    /// Replaces v4's <c>TraverseParallel</c>.
     /// </summary>
-    [Obsolete("Use Task.WhenAll with Either instead.")]
+    /// <param name="self">Source sequence</param>
+    /// <param name="f">Function to apply to each element</param>
+    /// <returns>An EitherAsync containing all Right values or the first Left</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static EitherAsync<L, IEnumerable<R>> TraverseParallel<A, L, R>(
         this IEnumerable<A> self,
         Func<A, EitherAsync<L, R>> f) =>
         new(RunTraverseParallel(self, f));
 
     /// <summary>
+    /// Runs all <c>EitherAsync</c> computations in parallel and collects results.
     /// Overload accepting <c>Func&lt;A, Task&lt;Either&gt;&gt;</c> directly for better type inference.
     /// </summary>
-    [Obsolete("Use Task.WhenAll with Either instead.")]
+    /// <param name="self">Source sequence</param>
+    /// <param name="f">Async function to apply to each element</param>
+    /// <returns>An EitherAsync containing all Right values or the first Left</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static EitherAsync<L, IEnumerable<R>> TraverseParallel<A, L, R>(
         this IEnumerable<A> self,
         Func<A, Task<Either<L, R>>> f) =>
@@ -298,9 +312,11 @@ public static class CompatExtensions
 
     /// <summary>
     /// Runs all <c>EitherAsync</c> computations sequentially and collects results.
-    /// Replaces v4's <c>Traverse</c> on <c>IEnumerable&lt;EitherAsync&gt;</c>.
     /// </summary>
-    [Obsolete("Use async/await with Task.WhenAll instead.")]
+    /// <param name="self">Source sequence of EitherAsync</param>
+    /// <param name="f">Function to apply to each element</param>
+    /// <returns>An EitherAsync containing all Right values or the first Left</returns>
+    /// <remarks>For new code, prefer <c>Eff&lt;R&gt;</c> or <c>Eff&lt;RT, R&gt;</c>.</remarks>
     public static EitherAsync<L, IEnumerable<R>> Traverse<L, R>(
         this IEnumerable<EitherAsync<L, R>> self,
         Func<EitherAsync<L, R>, EitherAsync<L, R>> f) =>

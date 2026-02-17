@@ -59,7 +59,6 @@ public readonly struct TryAsync<A>
     /// <summary>
     /// Converts to an <c>EitherAsync&lt;Error, A&gt;</c>.
     /// </summary>
-    [Obsolete("EitherAsync is a v4 compatibility shim.")]
     public EitherAsync<Error, A> ToEither() =>
         new(ToEitherAsync());
 
@@ -75,7 +74,6 @@ public readonly struct TryAsync<A>
     /// <summary>
     /// Converts to an <c>EitherAsync&lt;Error, A&gt;</c> with custom error mapping.
     /// </summary>
-    [Obsolete("EitherAsync is a v4 compatibility shim.")]
     public EitherAsync<Error, A> ToEither(Func<Exception, Error> mapError) =>
         new(ToEitherAsync(mapError));
 
@@ -115,7 +113,6 @@ public readonly struct TryAsync<A>
     /// <summary>
     /// Implicit conversion to <c>EitherAsync&lt;Error, A&gt;</c>.
     /// </summary>
-    [Obsolete("EitherAsync is a v4 compatibility shim.")]
     public static implicit operator EitherAsync<Error, A>(TryAsync<A> tryAsync) =>
         tryAsync.ToEither();
 }

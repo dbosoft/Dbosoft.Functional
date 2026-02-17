@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 // ReSharper disable once CheckNamespace
 namespace LanguageExt
 {
-    #pragma warning disable CS0618 // Obsolete shim types
-
     public static class UseExtensions
     {
         public static EitherAsync<L, R2> Use<L, R1, R2>(this EitherAsync<L, R1> self, Func<EitherAsync<L, R1>, EitherAsync<L, R2>> map) where R1 : IDisposable
@@ -33,6 +31,4 @@ namespace LanguageExt
             finally { resource?.Dispose(); }
         }
     }
-
-    #pragma warning restore CS0618
 }

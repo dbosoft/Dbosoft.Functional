@@ -8,8 +8,6 @@ using static LanguageExt.CompatPrelude;
 // ReSharper disable once CheckNamespace
 namespace LanguageExt
 {
-    #pragma warning disable CS0618 // Obsolete shim types
-
     public static class EitherExtensions
     {
 
@@ -77,6 +75,4 @@ namespace LanguageExt
                 None: () => EitherAsync<Error, Unit>.Right(Prelude.unit)));
         }
     }
-
-    #pragma warning restore CS0618
 }
