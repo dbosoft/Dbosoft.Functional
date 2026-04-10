@@ -32,7 +32,7 @@ steps:
     if ($sourceBranch.StartsWith("refs/tags/")) {
         $tagCommit = git rev-list -n 1 "$sourceBranch"
         $containingBranch = git branch -r --contains $tagCommit |
-            Where-Object { $_ -match 'origin/(main|master)' } |
+            Where-Object { $_ -notmatch '->' -and $_ -match 'origin/(main|master)' } |
             Select-Object -First 1
         if ($containingBranch) {
             $branchName = $containingBranch.Trim().Replace("origin/", "")
