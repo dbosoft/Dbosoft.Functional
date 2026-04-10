@@ -138,7 +138,7 @@ namespace Dbosoft.Functional
 
         public Task<TReply> Tell(TMsg message)
         {
-            var tcs = new TaskCompletionSource<TReply>(TaskContinuationOptions.RunContinuationsAsynchronously);  
+            var tcs = new TaskCompletionSource<TReply>(TaskCreationOptions.RunContinuationsAsynchronously);  
              _actionBlock.Post((message, tcs));
              
             return tcs.Task;
