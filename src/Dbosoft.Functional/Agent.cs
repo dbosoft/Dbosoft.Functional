@@ -138,9 +138,16 @@ namespace Dbosoft.Functional
 
         public Task<TReply> Tell(TMsg message)
         {
-            var tcs = new TaskCompletionSource<TReply>(TaskContinuationOptions.RunContinuationsAsynchronously);  
-             _actionBlock.Post((message, tcs));
-             
+            var tcs = new TaskCompletionSource<TReply>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            if (!_actionBlock.Post((message, tcs)))
+            {
+                if (_cancellationToken.IsCancellationRequested)
+                    tcs.SetCanceled();
+                else
+                    tcs.SetException(new InvalidOperationException("The agent is no longer accepting messages."));
+            }
+
             return tcs.Task;
         }
     }
